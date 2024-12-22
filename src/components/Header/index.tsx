@@ -5,8 +5,69 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { House, LogOut, Settings, User } from "lucide-react";
+import { createClient } from "@/utils/supabase/client";
 
 const Header = () => {
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      setLoading(true); // Show loading
+      setError(null); // Reset errors
+
+      try {
+        const supabase = await createClient();
+
+        // Fetch authenticated user
+        const {
+          data: { user },
+          error: authError,
+        } = await supabase.auth.getUser();
+
+        if (authError) throw authError; // Handle auth errors
+
+        setUser(user); // Set user info directly
+      } catch (err: any) {
+        setError(err.message); // Capture errors
+      } finally {
+        setLoading(false); // Stop loading
+      }
+    };
+    fetchUserInfo();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signOut();
+
+      if (error) throw error;
+
+      // Redirect or perform any action after logout
+      window.location.href = "/"; // Redirect to login page after logout
+    } catch (err) {
+      console.error("Error logging out:", err.message);
+    }
+  };
+
   // Navbar toggle
   const [navbarOpen, setNavbarOpen] = useState(false);
   const navbarToggleHandler = () => {
@@ -43,7 +104,7 @@ const Header = () => {
       <header
         className={`header left-0 top-0 z-40 flex w-full items-center ${
           sticky
-            ? "dark:bg-gray-dark dark:shadow-sticky-dark fixed z-[9999] bg-white !bg-opacity-80 shadow-sticky backdrop-blur-sm transition"
+            ? "fixed z-[9999] bg-white !bg-opacity-80 shadow-sticky backdrop-blur-sm transition dark:bg-gray-dark dark:shadow-sticky-dark"
             : "absolute bg-transparent"
         }`}
       >
@@ -159,21 +220,69 @@ const Header = () => {
                 </nav>
               </div>
               <div className="flex items-center justify-end pr-16 lg:pr-0">
-                <Link
-                  href="/signin"
-                  className="hidden px-7 py-3 text-base font-medium text-dark hover:opacity-70 dark:text-white md:block"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href="/signup"
-                  className="ease-in-up shadow-btn hover:shadow-btn-hover hidden rounded-sm bg-primary px-8 py-3 text-base font-medium text-white transition duration-300 hover:bg-opacity-90 md:block md:px-9 lg:px-6 xl:px-9"
-                >
-                  Sign Up
-                </Link>
-                <div>
+                {/* <div>
                   <ThemeToggler />
-                </div>
+                </div> */}
+                {user ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Avatar>
+                        <AvatarImage
+                          src="https://github.com/engmidnimo.png"
+                          alt="@shadcn"
+                        />
+                        <AvatarFallback>CN</AvatarFallback>
+                      </Avatar>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
+                      <DropdownMenuLabel>
+                        {" "}
+                        <div className="grid flex-1 text-left text-sm leading-tight">
+                          <span className="truncate font-semibold">
+                            {user.user_metadata?.full_name || "Not Provided!"}
+                          </span>
+                          <span className="truncate text-xs">
+                            {user.email || "Not Provided!"}
+                          </span>
+                        </div>
+                      </DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuGroup>
+                        <Link href={"/dashboard"}>
+                          <DropdownMenuItem>
+                            <House />
+                            <span>Dashboard</span>
+                          </DropdownMenuItem>
+                        </Link>
+                        <Link href={"/dashboard/settings"}>
+                          <DropdownMenuItem>
+                            <Settings />
+                            <span>Settings</span>
+                          </DropdownMenuItem>
+                        </Link>
+                        <DropdownMenuItem onClick={handleLogout}>
+                          <LogOut />
+                          Log out
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <div className="flex">
+                    <Link
+                      href="/signin"
+                      className="hidden px-7 py-3 text-base font-medium text-dark hover:opacity-70 dark:text-white md:block"
+                    >
+                      Sign In
+                    </Link>
+                    <Link
+                      href="/signup"
+                      className="ease-in-up hidden rounded-sm bg-primary px-8 py-3 text-base font-medium text-white shadow-btn transition duration-300 hover:bg-opacity-90 hover:shadow-btn-hover md:block md:px-9 lg:px-6 xl:px-9"
+                    >
+                      Sign Up
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>
