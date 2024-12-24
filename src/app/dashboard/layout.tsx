@@ -15,7 +15,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { createClient } from "@/utils/supabase/client";
+import { createClClient } from "@/utils/supabase/client";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -27,7 +27,7 @@ export default function DashboardLayout({
 }) {
   useEffect(() => {
     const checkAuth = async () => {
-      const supabase = await createClient();
+      const supabase = await createClClient();
 
       const {
         data: { user },

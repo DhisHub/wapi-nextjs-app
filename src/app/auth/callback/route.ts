@@ -1,4 +1,4 @@
-import { createClient } from "@/utils/supabase/server";
+import { createSrClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
@@ -11,7 +11,7 @@ export async function GET(request: Request) {
   const redirectTo = requestUrl.searchParams.get("redirect_to")?.toString();
 
   if (code) {
-    const supabase = await createClient();
+    const supabase = await createSrClient();
     await supabase.auth.exchangeCodeForSession(code);
   }
 
@@ -20,5 +20,5 @@ export async function GET(request: Request) {
   }
 
   // URL to redirect to after sign up process completes
-  return NextResponse.redirect(`${origin}/protected`);
+  return NextResponse.redirect(`${origin}/dashboard`);
 }

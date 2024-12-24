@@ -9,8 +9,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarFooter,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import ThemeToggler from "./Header/ThemeToggler";
 
 // Menu items.
 const items = [
@@ -54,6 +56,9 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <ThemeToggler />
+      </SidebarFooter>
     </Sidebar>
   );
 }

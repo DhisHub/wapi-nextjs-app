@@ -3,7 +3,9 @@ import Link from "next/link";
 
 import { Metadata } from "next";
 import { signInAction } from "../actions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClClient } from "@/utils/supabase/client";
 
 // export const metadata: Metadata = {
 //   title: "Sign In Page | Free Next.js Template for Startup and SaaS",
@@ -16,6 +18,23 @@ const SigninPage = () => {
     {},
   );
   const [formError, setFormError] = useState<string | null>(null); // API error handling
+  const router = useRouter();
+  const supabase = createClClient();
+
+  useEffect(() => {
+    const verifySession = async () => {
+      const { data, error } = await supabase.auth.getSession();
+
+      if (data.session) {
+        setFormError("You are already singn in");
+        router.push("/dashboard");
+        return;
+      }
+    };
+
+    verifySession();
+  }, []);
+
   const validateForm = (formData: FormData) => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
@@ -29,6 +48,7 @@ const SigninPage = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Returns true if no errors
   };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -40,6 +60,7 @@ const SigninPage = () => {
       setFormError(result.error); // Show server-side error
     }
   };
+
   return (
     <>
       <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
@@ -86,7 +107,11 @@ const SigninPage = () => {
                     )}
                   </div>
                   {formError && (
-                    <p className="mb-4 text-sm text-red-500">{formError}</p>
+                    <div className="text-md mb-4 flex w-full max-w-md flex-col gap-2">
+                      <div className="border-l-2 border-red-600 px-4 text-red-600">
+                        {formError}
+                      </div>
+                    </div>
                   )}
                   <div className="mb-8 flex flex-col justify-between sm:flex-row sm:items-center">
                     <div>

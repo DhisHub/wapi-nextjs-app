@@ -154,7 +154,7 @@ export default function Dashboard() {
                 </div>
               </CardContent>
               <CardFooter className="flex flex-col justify-between gap-4">
-                <Button className="w-full" type="submit">
+                <Button className="w-full text-white" type="submit">
                   Create
                 </Button>
                 {response && (
@@ -304,7 +304,7 @@ export default function Dashboard() {
                     sessionAction("start", selectedSession, setMessage)
                   }
                   type="button"
-                  className="bg-green-600"
+                  className="bg-green-500 text-white hover:bg-green-600"
                 >
                   Start
                 </Button>
@@ -313,7 +313,7 @@ export default function Dashboard() {
                     sessionAction("stop", selectedSession, setMessage)
                   }
                   type="button"
-                  className="bg-red-600"
+                  className="bg-red-500 text-white hover:bg-red-600"
                 >
                   Stop
                 </Button>
@@ -322,7 +322,7 @@ export default function Dashboard() {
                     sessionAction("restart", selectedSession, setMessage)
                   }
                   type="button"
-                  className="bg-blue-600"
+                  className="bg-blue-500 text-white hover:bg-blue-600"
                 >
                   Restart
                 </Button>
@@ -331,7 +331,7 @@ export default function Dashboard() {
                     sessionAction("logout", selectedSession, setMessage)
                   }
                   type="button"
-                  className="bg-orange-600"
+                  className="bg-orange-500 text-white hover:bg-orange-600"
                 >
                   Logout
                 </Button>
@@ -341,7 +341,7 @@ export default function Dashboard() {
                       deleteSession(selectedSession, setInfoError, setLoading) // Pass parameters
                   }
                   type="button"
-                  className="bg-red-600"
+                  className="bg-red-500 text-white hover:bg-red-600"
                 >
                   Delete
                 </Button>

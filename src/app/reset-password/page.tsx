@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { resetPasswordAction } from "@/app/actions";
 import { useSearchParams, useRouter } from "next/navigation";
-import { createClient } from "@/utils/supabase/client";
+import { createClClient } from "@/utils/supabase/client";
 
 const ResetPassPage = () => {
-  const supabase = createClient();
+  const supabase = createClClient();
   const [errors, setErrors] = useState<{
     password?: string;
     confirmPassword?: string;
@@ -28,7 +28,7 @@ const ResetPassPage = () => {
     };
 
     verifySession();
-  }, []); //
+  }, []);
 
   const validateForm = (formData: FormData) => {
     const password = formData.get("password") as string;

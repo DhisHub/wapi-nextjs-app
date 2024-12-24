@@ -4,7 +4,9 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { signUpAction } from "../actions";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClClient } from "@/utils/supabase/client";
 
 // export const metadata: Metadata = {
 //   title: "Sign Up Page | Free Next.js Template for Startup and SaaS",
@@ -16,6 +18,23 @@ const SignupPage = () => {
   // const searchParams = await props.searchParams;
   const [formError, setFormError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const router = useRouter();
+  const supabase = createClClient();
+
+  useEffect(() => {
+    const verifySession = async () => {
+      const { data, error } = await supabase.auth.getSession();
+
+      if (data.session) {
+        setFormError("You are already singn in");
+        router.push("/dashboard");
+        return;
+      }
+    };
+
+    verifySession();
+  }, []);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
