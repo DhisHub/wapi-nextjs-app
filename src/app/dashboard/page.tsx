@@ -45,26 +45,20 @@ export default function Dashboard() {
   const [sessionName, setSessionName] = useState("");
   const [sessionTell, setSessionTell] = useState("");
   const [sessionEmail, setSessionEmail] = useState("");
-
   const [sessions, setSessions] = useState([]); // State to store session data
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null);
-
   const [selectedSession, setSelectedSession] = useState<string>(
     () => sessions[0]?.name || "", // Initialize with the first session name if available
   );
-
   const [message, setMessage] = useState("");
-
   const [qrCode, setQrCode] = useState(null);
   const [sessionInfo, setSessionInfo] = useState(null);
   const [qrError, setQrError] = useState(null);
-
   const [qrLoading, setQrLoading] = useState(false);
   const [infoLoading, setInfoLoading] = useState(false);
   const [infoError, setInfoError] = useState(null);
   const [screenshot, setScreenshot] = useState<string | null>(null);
-
   // const prevStatus = useRef<string | null>(null);
 
   const handleFetchQrCode = () => {
@@ -73,7 +67,6 @@ export default function Dashboard() {
       fetchQrCode(selectedSession, setQrLoading, setQrCode, setQrError);
     }
   };
-
   const handleFetchScreenshot = () => {
     if (selectedSession) {
       fetchScreenshot(selectedSession, setScreenshot, setError, setLoading);
@@ -84,7 +77,6 @@ export default function Dashboard() {
       }
     }
   };
-
   useEffect(() => {
     if (selectedSession) {
       fetchSessionInfo(
@@ -98,23 +90,19 @@ export default function Dashboard() {
     handleFetchQrCode();
     handleFetchScreenshot();
   }, [selectedSession]);
-
   useEffect(() => {
     if (sessionInfo?.status === "SCAN_QR_CODE" && !qrCode) {
       handleFetchQrCode();
       console.log("lestining to session.status");
     }
   }, [sessionInfo?.status]);
-
   useEffect(() => {
     fetchSessions(setSessions, setLoading, setError);
-
     if (sessions.length > 0 && !selectedSession) {
       setSelectedSession(sessions[0].name);
       console.log("lestining to sessions");
     }
   }, [sessions]);
-
   return (
     <>
       <div className="grid w-full auto-rows-min gap-4 md:grid-cols-2">
@@ -184,7 +172,6 @@ export default function Dashboard() {
             </form>
           </Card>
         </div>
-
         <div className="rounded-xl bg-muted/50">
           <Card className="h-full w-full">
             <CardHeader>
@@ -230,14 +217,12 @@ export default function Dashboard() {
             </CardContent>
           </Card>
         </div>
-
         <div className="aspect-video rounded-xl bg-muted/50">
           <Card>
             <form>
               <CardHeader>
                 <CardTitle>Manage Sessions</CardTitle>
               </CardHeader>
-
               <CardContent>
                 <div className="grid w-full items-center gap-4">
                   <div className="flex flex-col space-y-1.5">
@@ -260,7 +245,6 @@ export default function Dashboard() {
                   </div>
                 </div>
               </CardContent>
-
               <CardContent className="flex gap-4">
                 <div className="h-72 w-72 content-center rounded-md border text-center">
                   {qrLoading ? (
@@ -287,7 +271,6 @@ export default function Dashboard() {
                     <p>{qrError || "QR code not available"}</p>
                   )}
                 </div>
-
                 <div className=" w-1/2 ">
                   {infoLoading ? (
                     <p>Loading session info...</p>
@@ -315,7 +298,6 @@ export default function Dashboard() {
                   </button>
                 </div>
               </CardContent>
-
               <CardFooter className="flex gap-4">
                 <Button
                   onClick={() =>
@@ -364,7 +346,6 @@ export default function Dashboard() {
                   Delete
                 </Button>
               </CardFooter>
-
               {message && (
                 <div className="mt-4 text-center">
                   <p>{message}</p>
@@ -374,7 +355,6 @@ export default function Dashboard() {
             {message && <p className="mt-4 text-center">{message}</p>}
           </Card>
         </div>
-
         <div className="aspect-video rounded-xl bg-muted/50">
           <Card>
             <CardHeader>

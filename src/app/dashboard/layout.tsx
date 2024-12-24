@@ -1,4 +1,5 @@
 // app/dashboard/layout.tsx
+"use client";
 import {
   SidebarInset,
   SidebarProvider,
@@ -14,12 +15,31 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { createClient } from "@/utils/supabase/client";
+import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  useEffect(() => {
+    const checkAuth = async () => {
+      const supabase = await createClient();
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        return redirect("/signin");
+      }
+    };
+    checkAuth();
+  }, []);
+
   return (
     <SidebarProvider>
       <AppSidebar />

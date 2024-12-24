@@ -30,7 +30,8 @@ import {
 } from "@/components/ui/dialog";
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
+import { deleteUserAccount } from "@/app/actions";
+import { useRouter } from "next/navigation";
 // import { createClient } from "@/utils/supabase/server";
 
 export default function Settings() {
@@ -40,31 +41,28 @@ export default function Settings() {
   const [success, setSuccess] = useState<string | null>(null);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const router = useRouter();
 
   const handleChangePassword = async () => {
     setLoading(true);
     setError(null);
     setSuccess(null);
-
     // Validate passwords
     if (!newPassword || newPassword.length < 6) {
       setError("Password must be at least 6 characters long.");
       setLoading(false);
       return;
     }
-
     if (newPassword !== confirmPassword) {
       setError("Passwords do not match.");
       setLoading(false);
       return;
     }
-
     try {
       const supabase = createClient();
       const { error } = await supabase.auth.updateUser({
         password: newPassword,
       });
-
       if (error) throw error;
       setSuccess("Password changed successfully!");
     } catch (err) {
@@ -73,23 +71,18 @@ export default function Settings() {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     const fetchUserInfo = async () => {
       setLoading(true); // Show loading
       setError(null); // Reset errors
-
       try {
         const supabase = await createClient();
-
         // Fetch authenticated user
         const {
           data: { user },
           error: authError,
         } = await supabase.auth.getUser();
-
         if (authError) throw authError; // Handle auth errors
-
         setUser(user); // Set user info directly
       } catch (err: any) {
         setError(err.message); // Capture errors
@@ -103,10 +96,9 @@ export default function Settings() {
   const handleLogout = async () => {
     try {
       const supabase = createClient();
+
       const { error } = await supabase.auth.signOut();
-
       if (error) throw error;
-
       // Redirect or perform any action after logout
       window.location.href = "/"; // Redirect to login page after logout
     } catch (err) {
@@ -114,6 +106,33 @@ export default function Settings() {
     }
   };
 
+  const handleDeleteAcc = async () => {
+    try {
+      const supabase = createClient();
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
+
+      if (error || !user) {
+        console.error("User not found:", error?.message);
+        return;
+      }
+
+      // Call the server-side function to delete the user
+      const result = await deleteUserAccount(user.id);
+
+      if (result.error) {
+        throw new Error(result.error);
+      }
+
+      // Sign out the user
+      await supabase.auth.signOut();
+      router.push("/"); // Redirect to the home page
+    } catch (err: any) {
+      console.error("Failed to delete account:", err.message);
+    }
+  };
   return (
     <>
       <Card className="w-full">
@@ -133,7 +152,7 @@ export default function Settings() {
                   <div>
                     <div>
                       <strong>Account Name</strong>
-                      <p>{user.user_metadata?.full_name || "Not Provided"}</p>
+                      <p>{user.user_metadata?.name || "Not Provided"}</p>
                     </div>
                     <div>
                       <strong>Emain</strong>
@@ -201,7 +220,6 @@ export default function Settings() {
             </div>
           </form>
         </CardContent>
-
         <CardHeader>
           <CardTitle>API</CardTitle>
         </CardHeader>
@@ -216,7 +234,6 @@ export default function Settings() {
                 <strong>API Key</strong>
                 <p>dsalfjklasdjfoiwejfalkddklfjasd</p>
               </div>
-
               <Button variant="outline" className="w-fit">
                 Generate Token
               </Button>
@@ -225,6 +242,9 @@ export default function Settings() {
         </CardContent>
         <CardFooter className="flex justify-between">
           <Button onClick={handleLogout}>Logout</Button>
+          <Button onClick={handleDeleteAcc} className="bg-red-600">
+            Delete Account
+          </Button>
         </CardFooter>
       </Card>
     </>

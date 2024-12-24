@@ -220,9 +220,6 @@ const Header = () => {
                 </nav>
               </div>
               <div className="flex items-center justify-end pr-16 lg:pr-0">
-                {/* <div>
-                  <ThemeToggler />
-                </div> */}
                 {user ? (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -239,7 +236,7 @@ const Header = () => {
                         {" "}
                         <div className="grid flex-1 text-left text-sm leading-tight">
                           <span className="truncate font-semibold">
-                            {user.user_metadata?.full_name || "Not Provided!"}
+                            {user.user_metadata?.name || "Not Provided!"}
                           </span>
                           <span className="truncate text-xs">
                             {user.email || "Not Provided!"}
@@ -283,6 +280,9 @@ const Header = () => {
                     </Link>
                   </div>
                 )}
+                <div>
+                  <ThemeToggler />
+                </div>
               </div>
             </div>
           </div>

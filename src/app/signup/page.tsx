@@ -1,19 +1,33 @@
+"use client";
 import Link from "next/link";
 
 import { Metadata } from "next";
 import { signUpAction } from "../actions";
-import { FormMessage, Message } from "@/components/form-message";
 
-export const metadata: Metadata = {
-  title: "Sign Up Page | Free Next.js Template for Startup and SaaS",
-  description: "This is Sign Up Page for Startup Nextjs Template",
-  // other metadata
-};
+import { useState } from "react";
 
-const SignupPage = async (props: { searchParams: Promise<Message> }) => {
-  const searchParams = await props.searchParams;
-  // console.log(searchParams);
+// export const metadata: Metadata = {
+//   title: "Sign Up Page | Free Next.js Template for Startup and SaaS",
+//   description: "This is Sign Up Page for Startup Nextjs Template",
+//   // other metadata
+// };
 
+const SignupPage = () => {
+  // const searchParams = await props.searchParams;
+  const [formError, setFormError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const result = await signUpAction(formData);
+    if (result?.error) {
+      setFormError(result.error);
+      setSuccessMessage(null);
+    } else if (result?.success) {
+      setSuccessMessage(result.success);
+      setFormError(null);
+    }
+  };
   return (
     <>
       <section className="relative z-10 overflow-hidden pb-16 pt-36 md:pb-20 lg:pb-28 lg:pt-[180px]">
@@ -21,16 +35,43 @@ const SignupPage = async (props: { searchParams: Promise<Message> }) => {
           <div className="-mx-4 flex flex-wrap">
             <div className="w-full px-4">
               <div className="mx-auto max-w-[500px] rounded bg-white px-6 py-10 shadow-three dark:bg-dark sm:p-[60px]">
-                <FormMessage message={searchParams} />
-
+                {successMessage && (
+                  <div className="text-md mb-4 flex w-full max-w-md flex-col gap-2">
+                    <div className="border-l-2 border-green-600 px-4 text-green-600">
+                      {successMessage}
+                    </div>
+                  </div>
+                )}
+                {formError && (
+                  <div className="text-md mb-4 flex w-full max-w-md flex-col gap-2">
+                    <div className="border-l-2 border-red-600 px-4 text-red-600">
+                      {formError}
+                    </div>
+                  </div>
+                )}
                 <div
                   key="form"
                   className="flex flex-col items-center justify-center gap-4"
                 >
-                  <h3 className="mb-3 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
-                    Create your account
-                  </h3>
-                  <form>
+                  <form onSubmit={handleSubmit}>
+                    <h3 className="mb-3 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
+                      Create your account
+                    </h3>
+                    <div className="mb-8">
+                      <label
+                        htmlFor="name"
+                        className="mb-3 block text-sm text-dark dark:text-white"
+                      >
+                        Your Name
+                      </label>
+                      <input
+                        type="name"
+                        name="name"
+                        placeholder="Enter your name"
+                        required
+                        className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
+                      />
+                    </div>
                     <div className="mb-8">
                       <label
                         htmlFor="email"
@@ -42,6 +83,7 @@ const SignupPage = async (props: { searchParams: Promise<Message> }) => {
                         type="email"
                         name="email"
                         placeholder="Enter your Email"
+                        required
                         className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
                       />
                     </div>
@@ -56,6 +98,7 @@ const SignupPage = async (props: { searchParams: Promise<Message> }) => {
                         type="password"
                         name="password"
                         placeholder="Enter your Password"
+                        required
                         className="border-stroke w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:text-body-color-dark dark:shadow-two dark:focus:border-primary dark:focus:shadow-none"
                       />
                     </div>
@@ -69,6 +112,7 @@ const SignupPage = async (props: { searchParams: Promise<Message> }) => {
                             type="checkbox"
                             id="checkboxLabel"
                             className="sr-only"
+                            required
                           />
                           <div className="box mr-4 mt-1 flex h-5 w-5 items-center justify-center rounded border border-body-color border-opacity-20 dark:border-white dark:border-opacity-10">
                             <span className="opacity-0">
@@ -105,7 +149,7 @@ const SignupPage = async (props: { searchParams: Promise<Message> }) => {
                     </div>
                     <div className="mb-6">
                       <button
-                        formAction={signUpAction}
+                        type="submit"
                         className="flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white shadow-submit duration-300 hover:bg-primary/90 dark:shadow-submit-dark"
                       >
                         Sign up
