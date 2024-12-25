@@ -65,7 +65,6 @@ export default function Settings() {
       setLoading(false);
     }
   };
-
   useEffect(() => {
     const fetchUserInfo = async () => {
       setLoading(true); // Show loading
