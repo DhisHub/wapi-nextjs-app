@@ -105,17 +105,19 @@ export const fetchQrCode = async (
     const response = await fetch(
       `http://localhost:3000/api/${sessionName}/auth/qr?format=image`,
     );
-    // console.log(response);
 
+    // console.log("response:" + response);
     if (!response.ok) throw new Error("Failed to fetch QR code");
 
     const blob = await response.blob();
-    // console.log(blob);
 
+    // console.log("blob:" + blob);
     const qrCodeUrl = URL.createObjectURL(blob);
     // console.log(qrCodeUrl);
 
+    // console.log("qrCodeUrl:" + qrCodeUrl);
     setQrCode(qrCodeUrl);
+    setQrLoading(false);
   } catch (err: any) {
     console.error("Error fetching QR code:", err);
     setQrError(err.message);

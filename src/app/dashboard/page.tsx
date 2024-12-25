@@ -65,18 +65,21 @@ export default function Dashboard() {
     const sessionStatus = sessionInfo?.status;
     if (sessionStatus === "SCAN_QR_CODE") {
       fetchQrCode(selectedSession, setQrLoading, setQrCode, setQrError);
+      console.log(qrLoading);
     }
   };
+
   const handleFetchScreenshot = () => {
     if (selectedSession) {
       fetchScreenshot(selectedSession, setScreenshot, setError, setLoading);
-      console.log(screenshot);
+      // console.log(screenshot);
     } else {
       if (!screenshot) {
         setError("Select a session first");
       }
     }
   };
+
   useEffect(() => {
     if (selectedSession) {
       fetchSessionInfo(
@@ -90,19 +93,39 @@ export default function Dashboard() {
     handleFetchQrCode();
     handleFetchScreenshot();
   }, [selectedSession]);
+
   useEffect(() => {
     if (sessionInfo?.status === "SCAN_QR_CODE" && !qrCode) {
       handleFetchQrCode();
       console.log("lestining to session.status");
     }
   }, [sessionInfo?.status]);
+
+  // Effect to fetch sessions and apply auto-selection or saved selection
   useEffect(() => {
+    // Get saved session from localStorage
+    const savedSession = localStorage.getItem("selectedSession");
+
+    // Fetch sessions
     fetchSessions(setSessions, setLoading, setError);
-    if (sessions.length > 0 && !selectedSession) {
-      setSelectedSession(sessions[0].name);
-      console.log("lestining to sessions");
+
+    // Auto-select or use saved session
+    if (sessions.length > 0) {
+      const initialSession = savedSession || sessions[0].name;
+
+      if (!selectedSession || selectedSession !== initialSession) {
+        setSelectedSession(initialSession); // Update selected session
+        localStorage.setItem("selectedSession", initialSession); // Save to localStorage
+      }
+      // const sessionStatus = sessionInfo?.status;
+      // if (sessionStatus === "WORKING") {
+      //   setQrLoading(true);
+      // }
+
+      console.log("Listening to sessions");
     }
-  }, [sessions]);
+  }, [sessions]); // Depend on sessions
+
   return (
     <>
       <div className="grid w-full auto-rows-min gap-4 md:grid-cols-2">
@@ -228,7 +251,10 @@ export default function Dashboard() {
                   <div className="flex flex-col space-y-1.5">
                     <Label htmlFor="session">Session</Label>
                     <Select
-                      onValueChange={(value) => setSelectedSession(value)}
+                      onValueChange={(value) => {
+                        setSelectedSession(value); // Update state
+                        localStorage.setItem("selectedSession", value); // Save to localStorage
+                      }}
                       value={selectedSession}
                     >
                       <SelectTrigger id="session">
@@ -250,7 +276,12 @@ export default function Dashboard() {
                   {qrLoading ? (
                     <p>Loading...</p>
                   ) : sessionInfo?.status === "SCAN_QR_CODE" && qrCode ? (
-                    <img src={qrCode} alt="QR Code" className="p-4" />
+                    <Image
+                      src={qrCode}
+                      alt="QR Code"
+                      width={400}
+                      height={400}
+                    />
                   ) : sessionInfo?.status === "WORKING" ? (
                     <p className="text-green-600">
                       {qrError || "Session is working"}
