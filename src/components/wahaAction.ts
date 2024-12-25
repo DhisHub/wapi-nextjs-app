@@ -1,3 +1,7 @@
+require("dotenv").config();
+
+const WAHA_API = process.env.NEXT_PUBLIC_WAHA_API;
+
 export const createSession = async (
   sessionName: string,
   sessionTell: string,
@@ -5,7 +9,7 @@ export const createSession = async (
   setResponse: (response: { error: boolean; message: string }) => void,
 ) => {
   try {
-    const res = await fetch("http://localhost:3000/api/sessions", {
+    const res = await fetch(WAHA_API + "/api/sessions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -70,7 +74,7 @@ export const fetchSessions = async (
   setError(null);
 
   try {
-    const res = await fetch("http://localhost:3000/api/sessions?all=true");
+    const res = await fetch(WAHA_API + "/api/sessions?all=true");
     if (!res.ok) {
       throw new Error("Failed to fetch sessions");
     }
@@ -103,7 +107,7 @@ export const fetchQrCode = async (
 
   try {
     const response = await fetch(
-      `http://localhost:3000/api/${sessionName}/auth/qr?format=image`,
+      `${WAHA_API}/api/${sessionName}/auth/qr?format=image`,
     );
 
     // console.log("response:" + response);
@@ -139,9 +143,7 @@ export const fetchSessionInfo = async (
   setInfoLoading(true);
   setInfoError("");
   try {
-    const response = await fetch(
-      `http://localhost:3000/api/sessions/${sessionName}`,
-    );
+    const response = await fetch(`${WAHA_API}/api/sessions/${sessionName}`);
     if (!response.ok) throw new Error("Failed to fetch session info");
     const info = await response.json();
     setSessionInfo(info);
@@ -164,7 +166,7 @@ export const sessionAction = async (
 
   try {
     const res = await fetch(
-      `http://localhost:3000/api/sessions/${selectedSession}/${action}`,
+      `${WAHA_API}/api/sessions/${selectedSession}/${action}`,
       {
         method: "POST",
       },
@@ -193,7 +195,7 @@ export const fetchScreenshot = async (
 
   try {
     const response = await fetch(
-      `http://localhost:3000/api/screenshot?session=${selectedSession}`,
+      `${WAHA_API}/api/screenshot?session=${selectedSession}`,
     );
     // console.log(response);
     if (!response.ok) {
@@ -233,7 +235,7 @@ export const deleteSession = async (
 
   try {
     const res = await fetch(
-      `http://localhost:3000/api/sessions/${sessionName}`, // Fixed URL
+      `${WAHA_API}/api/sessions/${sessionName}`, // Fixed URL
       {
         method: "DELETE",
         headers: {

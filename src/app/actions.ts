@@ -181,7 +181,7 @@ export const generateToken = async (userId: string) => {
     if (!secret) {
       throw new Error("JWT_SECRET is not defined in environment variables.");
     }
-
+    console.log(secret);
     // Generate Short, Permanent Token
     const token = jwt.sign({ id: userId }, secret); // No 'exp' included
 
