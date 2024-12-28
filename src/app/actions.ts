@@ -47,7 +47,7 @@ export const signUpAction = async (formData: FormData) => {
   try {
     const supabase = createClClient();
     // Generate Short, Permanent Token
-    const secret = process.env.JWT_SECRET!;
+    const secret = process.env.NEXT_PUBLIC_JWT_SECRET!;
     if (!secret) {
       throw new Error("JWT_SECRET is not defined in environment variables.");
     }
@@ -177,7 +177,7 @@ export const deleteUserAccount = async (userId: string) => {
 export const generateToken = async (userId: string) => {
   try {
     // Define Secret Key
-    const secret = process.env.JWT_SECRET!;
+    const secret = process.env.NEXT_PUBLIC_JWT_SECRET!;
     if (!secret) {
       throw new Error("JWT_SECRET is not defined in environment variables.");
     }
