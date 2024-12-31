@@ -14,21 +14,7 @@ const ContactPage = () => {
     <>
       <Breadcrumb
         pageName="Contact"
-        description={
-          <>
-            If you encounter any issues with the API or have technical
-            questions, please fill out the form below or report them on our{" "}
-            <a
-              href="https://github.com/DhisHub/wapi_nextjs_app/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              GitHub Issues page
-            </a>
-            .
-          </>
-        }
+        description={`If you encounter any issues with the API or have technical questions, please fill out the form below or report them on our GitHub Issues page: https://github.com/DhisHub/wapi_nextjs_app/issues.`}
       />
 
       <Contact />
