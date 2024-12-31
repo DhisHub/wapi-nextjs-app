@@ -102,10 +102,10 @@ const Header = () => {
   return (
     <>
       <header
-        className={`header left-0 top-0 z-40 flex w-full items-center ${
+        className={`header left-0 top-0 z-40  flex w-full items-center ${
           sticky
-            ? "fixed z-[9999] bg-white !bg-opacity-80 shadow-sticky backdrop-blur-sm transition dark:bg-gray-dark dark:shadow-sticky-dark"
-            : "absolute bg-transparent"
+            ? "fixed z-[50] bg-white !bg-opacity-80 shadow-sticky backdrop-blur-sm transition dark:bg-gray-dark dark:shadow-sticky-dark"
+            : "absolute bg-transparent "
         }`}
       >
         <div className="container">
@@ -118,18 +118,18 @@ const Header = () => {
                 } `}
               >
                 <Image
-                  src="/images/logo/logo-2.svg"
+                  src="/images/logo/logo-light.svg"
                   alt="logo"
                   width={140}
                   height={30}
-                  className="w-full dark:hidden"
+                  className="h-16 w-full object-contain dark:hidden"
                 />
                 <Image
-                  src="/images/logo/logo.svg"
+                  src="/images/logo/logo-dark.svg"
                   alt="logo"
                   width={140}
                   height={30}
-                  className="hidden w-full dark:block"
+                  className="hidden h-16 w-full object-contain dark:block"
                 />
               </Link>
             </div>
@@ -193,10 +193,10 @@ const Header = () => {
                     <DropdownMenuTrigger asChild>
                       <Avatar>
                         <AvatarImage
-                          src="https://github.com/engmidnimo.png"
+                          src="/images/testimonials/auth-01.png"
                           alt="@shadcn"
                         />
-                        <AvatarFallback>CN</AvatarFallback>
+                        <AvatarFallback>UI</AvatarFallback>
                       </Avatar>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56">
