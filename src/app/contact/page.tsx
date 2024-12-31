@@ -13,8 +13,22 @@ const ContactPage = () => {
   return (
     <>
       <Breadcrumb
-        pageName="Contact Page"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. In varius eros eget sapien consectetur ultrices. Ut quis dapibus libero."
+        pageName="Contact"
+        description={
+          <>
+            If you encounter any issues with the API or have technical
+            questions, please fill out the form below or report them on our{" "}
+            <a
+              href="https://github.com/DhisHub/wapi_nextjs_app/issues"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              GitHub Issues page
+            </a>
+            .
+          </>
+        }
       />
 
       <Contact />

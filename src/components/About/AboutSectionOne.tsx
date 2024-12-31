@@ -24,8 +24,8 @@ const AboutSectionOne = () => {
           <div className="-mx-4 flex flex-wrap items-center">
             <div className="w-full px-4 lg:w-1/2">
               <SectionTitle
-                title="Crafted for Startup, SaaS and Business Sites."
-                paragraph="The main ‘thrust’ is to focus on educating attendees on how to best protect highly vulnerable business applications with interactive panel discussions and roundtables."
+                title="Finally, a WhatsApp API That is Easy and Simple"
+                paragraph="Struggling to find a simple and reliable WhatsApp API? WAPI is here to solve that problem. No more complicated steps or endless searching—just sign up, generate your token, and focus on building amazing apps."
                 mb="44px"
               />
 
@@ -35,15 +35,14 @@ const AboutSectionOne = () => {
               >
                 <div className="mx-[-12px] flex flex-wrap">
                   <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
-                    <List text="Premium quality" />
-                    <List text="Tailwind CSS" />
-                    <List text="Use for lifetime" />
+                    <List text="Simple and Fast" />
+                    <List text="Unlimited Sessions" />
+                    <List text="Open Source API" />
                   </div>
 
                   <div className="w-full px-3 sm:w-1/2 lg:w-full xl:w-1/2">
-                    <List text="Next.js" />
-                    <List text="Rich documentation" />
-                    <List text="Developer friendly" />
+                    <List text="Developer-Friendly" />
+                    <List text="Easy and Reliable" />
                   </div>
                 </div>
               </div>
@@ -53,13 +52,13 @@ const AboutSectionOne = () => {
               <div className="relative mx-auto aspect-[25/24] max-w-[500px] lg:mr-0">
                 <Image
                   src="/images/about/about-image.svg"
-                  alt="about-image"
+                  alt="wapi-api-image"
                   fill
                   className="mx-auto max-w-full drop-shadow-three dark:hidden dark:drop-shadow-none lg:mr-0"
                 />
                 <Image
                   src="/images/about/about-image-dark.svg"
-                  alt="about-image"
+                  alt="wapi-api-image-dark"
                   fill
                   className="mx-auto hidden max-w-full drop-shadow-three dark:block dark:drop-shadow-none lg:mr-0"
                 />

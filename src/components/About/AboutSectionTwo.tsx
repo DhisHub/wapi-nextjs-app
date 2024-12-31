@@ -12,13 +12,13 @@ const AboutSectionTwo = () => {
             >
               <Image
                 src="/images/about/about-image-2.svg"
-                alt="about image"
+                alt="WAPI API Integration"
                 fill
                 className="drop-shadow-three dark:hidden dark:drop-shadow-none"
               />
               <Image
                 src="/images/about/about-image-2-dark.svg"
-                alt="about image"
+                alt="WAPI API Integration"
                 fill
                 className="hidden drop-shadow-three dark:block dark:drop-shadow-none"
               />
@@ -28,29 +28,30 @@ const AboutSectionTwo = () => {
             <div className="max-w-[470px]">
               <div className="mb-9">
                 <h3 className="mb-4 text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
-                  Bug free code
+                  Easy and Reliable API
                 </h3>
                 <p className="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Integrate WAPI effortlessly with minimal setup. Designed for
+                  simplicity and reliability, it's the perfect solution for your
+                  get-go applications.
                 </p>
               </div>
               <div className="mb-9">
                 <h3 className="mb-4 text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
-                  Premier support
+                  Unlimited Sessions
                 </h3>
                 <p className="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt.
+                  Enjoy unlimited session capabilities, allowing your
+                  applications to scale without restrictions.
                 </p>
               </div>
               <div className="mb-1">
                 <h3 className="mb-4 text-xl font-bold text-black dark:text-white sm:text-2xl lg:text-xl xl:text-2xl">
-                  Next.js
+                  Developer-Friendly
                 </h3>
                 <p className="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
-                  Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt
-                  consectetur adipiscing elit setim.
+                  WAPI is open-source and built with developers in mind. Access
+                  simple and easy to use documentation and start using it now.
                 </p>
               </div>
             </div>

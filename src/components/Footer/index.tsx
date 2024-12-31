@@ -12,23 +12,23 @@ const Footer = () => {
               <div className="mb-12 max-w-[360px] lg:mb-16">
                 <Link href="/" className="mb-8 inline-block">
                   <Image
-                    src="/images/logo/logo-2.svg"
+                    src="/images/logo/logo-light.svg"
                     alt="logo"
-                    className="w-full dark:hidden"
+                    className="h-16 w-full object-contain dark:hidden"
                     width={140}
                     height={30}
                   />
                   <Image
-                    src="/images/logo/logo.svg"
+                    src="/images/logo/logo-dark.svg"
                     alt="logo"
-                    className="hidden w-full dark:block"
+                    className="hidden h-16 w-full object-contain dark:block"
                     width={140}
                     height={30}
                   />
                 </Link>
                 <p className="mb-9 text-base leading-relaxed text-body-color dark:text-body-color-dark">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Integer lobortis.
+                  Empowering seamless WhatsApp integration with fast, reliable,
+                  and developer-friendly APIs.
                 </p>
                 <div className="flex items-center">
                   <a
@@ -117,18 +117,18 @@ const Footer = () => {
                 <ul>
                   <li>
                     <Link
-                      href="/blog"
+                      href="/docs"
                       className="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                     >
-                      Blog
+                      Docs
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="/"
+                      href="/contact"
                       className="mb-4 inline-block text-base text-body-color duration-300 hover:text-primary dark:text-body-color-dark dark:hover:text-primary"
                     >
-                      Pricing
+                      Support
                     </Link>
                   </li>
                   <li>
