@@ -24,7 +24,7 @@ const AboutSectionOne = () => {
           <div className="-mx-4 flex flex-wrap items-center">
             <div className="w-full px-4 lg:w-1/2">
               <SectionTitle
-                title="Finally a WhatsApp API That is Easy and Simple"
+                title="Finally, a WhatsApp API That is Easy and Simple"
                 paragraph="Struggling to find a simple and reliable WhatsApp API? WAPI is here to solve that problem. No more complicated steps or endless searching—just sign up, generate your token, and focus on building amazing apps."
                 mb="44px"
               />

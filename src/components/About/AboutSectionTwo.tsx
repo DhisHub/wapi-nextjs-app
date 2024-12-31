@@ -32,8 +32,8 @@ const AboutSectionTwo = () => {
                 </h3>
                 <p className="text-base font-medium leading-relaxed text-body-color sm:text-lg sm:leading-relaxed">
                   Integrate WAPI effortlessly with minimal setup. Designed for
-                  simplicity and reliability, it's the perfect solution for your
-                  get-go applications.
+                  simplicity and reliability, it&apos;s the perfect solution for
+                  your get-go applications.
                 </p>
               </div>
               <div className="mb-9">
