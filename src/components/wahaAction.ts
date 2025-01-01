@@ -2,6 +2,7 @@ require("dotenv").config();
 import { createClClient } from "@/utils/supabase/client";
 
 const WAHA_API = process.env.NEXT_PUBLIC_WAHA_API;
+const token = process.env.NEXT_PUBLIC_WAHA_API_TOKEN;
 
 export const createSession = async (
   sessionName: string,
@@ -97,7 +98,13 @@ export const fetchSessions = async (
     }
 
     // Fetch all sessions
-    const res = await fetch(WAHA_API + "/api/sessions?all=true");
+    const res = await fetch(WAHA_API + "/api/sessions?all=true", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
     if (!res.ok) {
       throw new Error("Failed to fetch sessions");
     }

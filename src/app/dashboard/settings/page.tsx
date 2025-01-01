@@ -328,7 +328,7 @@ export default function Settings() {
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
                 <strong>Base URL</strong>
-                <p>http://198.7.119.111:4000/api/</p>
+                <p>https://www.wapi.so/api</p>
               </div>
               <div className="flex flex-col space-y-1.5">
                 <strong>API Token</strong>
