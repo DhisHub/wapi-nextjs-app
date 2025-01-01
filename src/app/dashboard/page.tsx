@@ -154,15 +154,17 @@ export default function Dashboard() {
                       placeholder="default"
                       value={sessionName}
                       onChange={(e) => setSessionName(e.target.value)}
+                      required
                     />
                   </div>
                   <div className="flex flex-col space-y-1.5">
-                    <Label htmlFor="framework">Number</Label>
+                    <Label htmlFor="framework">Tell</Label>
                     <Input
                       id="tell"
                       placeholder="252615983417"
                       value={sessionTell}
                       onChange={(e) => setSessionTell(e.target.value)}
+                      required
                     />
                   </div>
                   <div className="flex flex-col space-y-1.5">
@@ -172,6 +174,7 @@ export default function Dashboard() {
                       placeholder="email@example.com"
                       value={sessionEmail}
                       onChange={(e) => setSessionEmail(e.target.value)}
+                      required
                     />
                   </div>
                 </div>
@@ -224,12 +227,12 @@ export default function Dashboard() {
                         <TableCell>{session.status}</TableCell>
                         <TableCell>
                           {session.config && session.config.metadata
-                            ? session.config.metadata["user.email"]
+                            ? session.config.metadata["session.email"]
                             : "N/A"}
                         </TableCell>
                         <TableCell>
                           {session.config && session.config.metadata
-                            ? session.config.metadata["user.id"]
+                            ? session.config.metadata["session.tell"]
                             : "N/A"}
                         </TableCell>
                       </TableRow>

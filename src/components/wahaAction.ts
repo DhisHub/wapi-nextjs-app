@@ -1,4 +1,5 @@
 require("dotenv").config();
+import { createClClient } from "@/utils/supabase/client";
 
 const WAHA_API = process.env.NEXT_PUBLIC_WAHA_API;
 
@@ -9,6 +10,15 @@ export const createSession = async (
   setResponse: (response: { error: boolean; message: string }) => void,
 ) => {
   try {
+    const supabase = createClClient();
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+    if (userError) {
+      throw new Error("Failed to fetch user data");
+    }
+
     const res = await fetch(WAHA_API + "/api/sessions", {
       method: "POST",
       headers: {
@@ -19,8 +29,10 @@ export const createSession = async (
         start: true,
         config: {
           metadata: {
-            "user.id": sessionTell,
-            "user.email": sessionEmail,
+            "user.id": user.id, // Store Supabase user ID
+            "user.email": user.email,
+            "session.email": sessionEmail,
+            "session.tell": sessionTell,
           },
           proxy: null,
           debug: false,
@@ -74,13 +86,32 @@ export const fetchSessions = async (
   setError(null);
 
   try {
+    const supabase = createClClient();
+    // Get the logged-in user from Supabase
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+    if (userError) {
+      throw new Error("Failed to fetch user data");
+    }
+
+    // Fetch all sessions
     const res = await fetch(WAHA_API + "/api/sessions?all=true");
     if (!res.ok) {
       throw new Error("Failed to fetch sessions");
     }
 
     const data = await res.json();
-    setSessions(data);
+
+    // Filter sessions by logged-in user ID
+    const filteredSessions = data.filter(
+      (session: any) =>
+        session.config.metadata &&
+        session.config.metadata["user.id"] === user.id,
+    );
+
+    setSessions(filteredSessions); // Set filtered sessions
   } catch (error) {
     console.error("Error fetching sessions:", error);
     setError("Failed to fetch live sessions");

@@ -25,6 +25,7 @@ import { useState, useEffect } from "react";
 import { createClClient } from "@/utils/supabase/client";
 import { deleteUserAccount, generateToken } from "@/app/actions";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 // import { createClClient } from "@/utils/supabase/server";
 
 export default function Settings() {
@@ -173,9 +174,12 @@ export default function Settings() {
     }
   };
 
-  const handleDeleteAcc = async () => {
+  const handleDeleteAcc = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // Prevent default form submission behavior
+
     try {
       const supabase = createClClient();
+
       const {
         data: { user },
         error,
@@ -212,9 +216,36 @@ export default function Settings() {
             <div className="grid w-full items-center gap-4">
               {/* Loading State */}
               {loading ? (
-                <p>Loading...</p>
+                <div>
+                  <div>
+                    <strong>Account Name</strong>
+                    <Skeleton className="h-4 w-[250px] bg-slate-200 dark:bg-[#343c50]" />
+                  </div>
+                  <div>
+                    <strong>Emain</strong>
+                    <Skeleton className="h-4 w-[250px] bg-slate-200 dark:bg-[#343c50]" />
+                  </div>
+                  <div>
+                    <strong>Password</strong>
+                    <p>*************</p>
+                  </div>
+                </div>
               ) : error ? (
-                <p className="text-red-500">{error}</p>
+                <div>
+                  <div>
+                    <strong>Account Name</strong>
+                    <Skeleton className="h-4 w-[250px] bg-slate-200 dark:bg-[#343c50]" />
+                  </div>
+                  <div>
+                    <strong>Emain</strong>
+                    <Skeleton className="h-4 w-[250px] bg-slate-200 dark:bg-[#343c50]" />
+                  </div>
+                  <div>
+                    <strong>Password</strong>
+                    <p>*************</p>
+                  </div>
+                  <p className="text-red-500">{error}</p>
+                </div>
               ) : (
                 user && (
                   <div>
@@ -225,10 +256,6 @@ export default function Settings() {
                     <div>
                       <strong>Emain</strong>
                       <p>{user.email || "Not Provided"}</p>
-                    </div>
-                    <div>
-                      <strong>Tell Number</strong>
-                      <p>{user.phone || "Not Provided"}</p>
                     </div>
                     <div>
                       <strong>Password</strong>
@@ -243,6 +270,7 @@ export default function Settings() {
                     Change Password
                   </Button>
                 </DialogTrigger>
+
                 <DialogContent className="sm:max-w-[425px]">
                   <DialogHeader>
                     <DialogTitle>Change Password</DialogTitle>
@@ -250,8 +278,9 @@ export default function Settings() {
                       Make sure you remember your new password.
                     </DialogDescription>
                   </DialogHeader>
-                  <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
+
+                  <div className="flex flex-col gap-4 py-4">
+                    <div>
                       <Input
                         id="new_pass"
                         placeholder="New password"
@@ -261,7 +290,7 @@ export default function Settings() {
                         onChange={(e) => setNewPassword(e.target.value)}
                       />
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
+                    <div>
                       <Input
                         id="conf_pass"
                         placeholder="Confirm new password"
@@ -272,13 +301,16 @@ export default function Settings() {
                       />
                     </div>
                   </div>
+
                   {error && <p className="text-red-500">{error}</p>}
                   {success && <p className="text-green-500">{success}</p>}
+
                   <DialogFooter>
                     <Button
                       type="button"
                       onClick={handleChangePassword}
                       disabled={loading}
+                      className="text-white"
                     >
                       {loading ? "Saving..." : "Save changes"}
                     </Button>
@@ -300,8 +332,12 @@ export default function Settings() {
               </div>
               <div className="flex flex-col space-y-1.5">
                 <strong>API Token</strong>
-                {token && (
-                  <p className="break-all">{token || "No token provided"}</p>
+                {loading ? (
+                  <Skeleton className="h-4 w-[250px] bg-slate-200 dark:bg-[#343c50]" />
+                ) : (
+                  token && (
+                    <p className="break-all">{token || "No token provided"}</p>
+                  )
                 )}
               </div>
               <Button
@@ -315,15 +351,61 @@ export default function Settings() {
           </form>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Button onClick={handleLogout} className="text-white">
+          <Button
+            onClick={handleLogout}
+            className="bg-destructive text-white hover:bg-red-800"
+          >
             Logout
           </Button>
-          <Button
-            onClick={handleDeleteAcc}
-            className="bg-red-500 text-white hover:bg-red-600"
-          >
-            Delete Account
-          </Button>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="bg-destructive text-white hover:bg-red-800">
+                Delete Account
+              </Button>
+            </DialogTrigger>
+
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Delete Your Account!</DialogTitle>
+                <DialogDescription>
+                  Are you sure you want to delete your account?
+                </DialogDescription>
+              </DialogHeader>
+
+              <form onSubmit={handleDeleteAcc}>
+                <div className="flex flex-col gap-4 py-4">
+                  <div>
+                    <Input
+                      id="confirmation_input"
+                      name="confirmation_input"
+                      placeholder="Write 'Delete'"
+                      type="text"
+                      className="col-span-3"
+                      pattern="Delete" // Ensures the value must match 'Delete'
+                      required
+                    />
+                    <p className="mt-2 text-xs text-gray-500">
+                      You must type "Delete" exactly to confirm.
+                    </p>
+                  </div>
+                </div>
+
+                {error && <p className="text-red-500">{error}</p>}
+                {success && <p className="text-green-500">{success}</p>}
+
+                <DialogFooter>
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    className="bg-destructive text-white hover:bg-red-800"
+                  >
+                    {loading ? "Deleting..." : "Delete My Account"}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
         </CardFooter>
       </Card>
     </>
