@@ -11,16 +11,16 @@ const AboutSectionTwo = () => {
               data-wow-delay=".15s"
             >
               <Image
-                src="/images/about/about-image-2.svg"
+                src="/images/about/aboutSectionTwo.webp"
                 alt="WAPI API Integration"
                 fill
-                className="drop-shadow-three dark:hidden dark:drop-shadow-none"
+                className="rounded-2xl object-cover drop-shadow-three dark:hidden dark:drop-shadow-none"
               />
               <Image
-                src="/images/about/about-image-2-dark.svg"
+                src="/images/about/aboutSectionTwo.webp"
                 alt="WAPI API Integration"
                 fill
-                className="hidden drop-shadow-three dark:block dark:drop-shadow-none"
+                className="hidden rounded-2xl object-cover drop-shadow-three dark:block dark:drop-shadow-none "
               />
             </div>
           </div>
