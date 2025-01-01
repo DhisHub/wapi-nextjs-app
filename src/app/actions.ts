@@ -14,8 +14,6 @@ export const signUpAction = async (formData: FormData) => {
   const password = formData.get("password")?.toString();
 
   const supabase = createSrClient();
-  const origin =
-    process.env.NEXT_PUBLIC_BASE_URL || (await headers()).get("origin");
 
   if (!email || !password) {
     return { error: "Email and password are required." };
@@ -32,7 +30,6 @@ export const signUpAction = async (formData: FormData) => {
     password,
     options: {
       data: { name: name },
-      emailRedirectTo: `${origin}/auth/callback`,
     },
   });
 
