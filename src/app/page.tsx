@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   creator: "Wapi.so Team",
   robots: "index, follow",
   openGraph: {
-    title: "Wapi.so - Simplify WhatsApp API Integration",
+    title: "Wapi.so - Effortless WhatsApp API for Developers 🚀",
     description:
       "Wapi.so is your go-to open-source solution for WhatsApp API integration, featuring text, file, voice, and video sending capabilities, and the ability to create multiple sessions.",
     url: "https://wapi.so",
