@@ -386,7 +386,7 @@ export default function Settings() {
                       required
                     />
                     <p className="mt-2 text-xs text-gray-500">
-                      You must type "Delete" exactly to confirm.
+                      You must type &quot;Delete&quot; exactly to confirm.
                     </p>
                   </div>
                 </div>
