@@ -3,13 +3,10 @@
     {
       "source": "/api/:path*",
       "destination": "https://api.wapi.so/api/:path*"
-    }
-  ],
-  "redirects": [
+    },
     {
       "source": "https://wapi.so/api/:path*",
-      "destination": "https://api.wapi.so/api/:path*",
-      "permanent": true
+      "destination": "https://api.wapi.so/api/:path*"
     }
   ]
 }
