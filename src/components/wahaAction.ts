@@ -23,6 +23,7 @@ export const createSession = async (
     const res = await fetch(WAHA_API + "/api/sessions", {
       method: "POST",
       headers: {
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -98,7 +99,7 @@ export const fetchSessions = async (
     }
 
     // Fetch all sessions
-    const res = await fetch(WAHA_API + "/api/sessions?all=true", {
+    const res = await fetch("https://www.wapi.so/api/sessions?all=true", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -146,6 +147,12 @@ export const fetchQrCode = async (
   try {
     const response = await fetch(
       `${WAHA_API}/api/${sessionName}/auth/qr?format=image`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
     );
 
     // console.log("response:" + response);
@@ -181,7 +188,13 @@ export const fetchSessionInfo = async (
   setInfoLoading(true);
   setInfoError("");
   try {
-    const response = await fetch(`${WAHA_API}/api/sessions/${sessionName}`);
+    const response = await fetch(`${WAHA_API}/api/sessions/${sessionName}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
     if (!response.ok) throw new Error("Failed to fetch session info");
     const info = await response.json();
     setSessionInfo(info);
@@ -207,6 +220,9 @@ export const sessionAction = async (
       `${WAHA_API}/api/sessions/${selectedSession}/${action}`,
       {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
     );
 
@@ -234,6 +250,12 @@ export const fetchScreenshot = async (
   try {
     const response = await fetch(
       `${WAHA_API}/api/screenshot?session=${selectedSession}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
     );
     // console.log(response);
     if (!response.ok) {
@@ -277,6 +299,7 @@ export const deleteSession = async (
       {
         method: "DELETE",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       },

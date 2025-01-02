@@ -132,7 +132,7 @@ export default function Dashboard() {
         <div className="rounded-xl bg-muted/50">
           <Card className="h-full w-full">
             <CardHeader>
-              <CardTitle>Create session</CardTitle>
+              <CardTitle>Create Session</CardTitle>
             </CardHeader>
             <form
               onSubmit={(e) => {
