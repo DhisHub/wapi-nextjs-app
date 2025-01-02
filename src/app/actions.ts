@@ -8,6 +8,9 @@ import jwt from "jsonwebtoken";
 import { createClClient } from "@/utils/supabase/client";
 import { createCuClient } from "@/utils/supabase/super-client";
 
+const WAHA_API = process.env.NEXT_PUBLIC_WAHA_API;
+const token = process.env.NEXT_PUBLIC_WAHA_API_TOKEN;
+
 export const signUpAction = async (formData: FormData) => {
   const name = formData.get("name")?.toString();
   const email = formData.get("email")?.toString();
@@ -154,13 +157,56 @@ export const signOutAction = async () => {
   return redirect("/sign-in");
 };
 
-export const deleteUserAccount = async (userId: string) => {
+export const deleteUserAccount = async (userId: any) => {
   try {
     const supabase = createCuClient();
-    // console.log(hasEnvVars);
+
+    // Fetch all sessions created by the user
+    const res = await fetch(WAHA_API + "/api/sessions?all=true", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch sessions");
+    }
+
+    const sessionsData = await res.json();
+
+    // Filter sessions created by the current user
+    const userSessions = sessionsData.filter(
+      (session: any) =>
+        session.config.metadata &&
+        session.config.metadata["user.id"] === userId,
+    );
+
+    // Delete all sessions concurrently using Promise.all
+    const deleteSessionPromises = userSessions.map(async (session: any) => {
+      const sessionName = session.name;
+
+      // Call the API to delete the session directly
+      const deleteRes = await fetch(`${WAHA_API}/api/sessions/${sessionName}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!deleteRes.ok) {
+        throw new Error(`Failed to delete session: ${sessionName}`);
+      }
+
+      console.log(`Session ${sessionName} deleted successfully.`);
+    });
+
+    // Wait for all session deletions to complete
+    await Promise.all(deleteSessionPromises);
 
     // Delete the user using the admin API
-    const { error } = await (await supabase).auth.admin.deleteUser(userId);
+    const { error } = await supabase.auth.admin.deleteUser(userId);
     await supabase.from("tokens").delete().eq("user_id", userId);
 
     if (error) throw new Error(error.message);

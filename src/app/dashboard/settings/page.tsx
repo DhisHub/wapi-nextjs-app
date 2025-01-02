@@ -176,6 +176,7 @@ export default function Settings() {
 
   const handleDeleteAcc = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Prevent default form submission behavior
+    setLoading(true); // Show loading spinner
 
     try {
       const supabase = createClClient();
@@ -186,22 +187,30 @@ export default function Settings() {
       } = await supabase.auth.getUser();
 
       if (error || !user) {
+        setError("User not found!");
         console.error("User not found:", error?.message);
+        setLoading(false); // Hide loading spinner
         return;
       }
 
-      // Call the server-side function to delete the user
+      // Call the server-side function to delete the user and sessions
       const result = await deleteUserAccount(user.id);
 
       if (result.error) {
+        setError(result.error);
+        setLoading(false); // Hide loading spinner
         throw new Error(result.error);
       }
 
       // Sign out the user
       await supabase.auth.signOut();
+      setSuccess("Account deleted successfully!");
+      setLoading(false); // Hide loading spinner
       router.push("/"); // Redirect to the home page
     } catch (err: any) {
       console.error("Failed to delete account:", err.message);
+      setError(err.message);
+      setLoading(false); // Hide loading spinner
     }
   };
 
