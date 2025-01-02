@@ -1,11 +1,4 @@
 {
-  "redirects": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://www.wapi.so/api/:path*",
-      "permanent": true
-    }
-  ],
   "rewrites": [
     {
       "source": "/api/:path*",
