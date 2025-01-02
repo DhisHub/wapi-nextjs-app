@@ -97,7 +97,8 @@ export const fetchSessions = async (
     if (userError) {
       throw new Error("Failed to fetch user data");
     }
-
+    console.log(WAHA_API);
+    console.log(token);
     // Fetch all sessions
     const res = await fetch("https://www.wapi.so/api/sessions?all=true", {
       method: "GET",
