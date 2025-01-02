@@ -100,7 +100,7 @@ export const fetchSessions = async (
     // console.log(WAHA_API);
     // console.log(token);
     // Fetch all sessions
-    const res = await fetch("https://www.wapi.so/api/sessions?all=true", {
+    const res = await fetch(WAHA_API + "/api/sessions?all=true", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
