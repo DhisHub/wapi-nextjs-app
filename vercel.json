@@ -8,7 +8,7 @@
   "redirects": [
     {
       "source": "https://wapi.so/api/:path*",
-      "destination": "https://www.wapi.so/api/:path*",
+      "destination": "https://api.wapi.so/api/:path*",
       "permanent": true
     }
   ]
