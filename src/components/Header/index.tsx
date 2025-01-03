@@ -193,7 +193,7 @@ const Header = () => {
                     <DropdownMenuTrigger asChild>
                       <Avatar>
                         <AvatarImage
-                          src="/images/testimonials/auth-01.png"
+                          src="/images/circle-user.png"
                           alt="@shadcn"
                         />
                         <AvatarFallback>UI</AvatarFallback>
